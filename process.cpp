@@ -361,6 +361,11 @@ namespace project {
 
 }// end namespace
 
+/*  this is test function should delete
+ */
+
+#if PDEBUG == true
+
 void Process_Test() {
     graph::_T_Graph<long, long> Graph;
     long V;
@@ -386,6 +391,7 @@ void Process_Test() {
         cerr << endl;
     }
 }
+#endif
 
 void Process(graph::_T_Graph<long, long>& Graph) {
     //variables define
