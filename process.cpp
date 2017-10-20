@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "memory.h"
+#include "autoptr.h"
 
 //for C++ headfiles
 #include <iostream>
@@ -397,8 +397,8 @@ void Process(graph::_T_Graph<long, long>& Graph) {
     bool bhasVaildGraph;
     long v, s_start, s_end;
     //Parser
-    std::auto_ptr<parser::Parser> ptrParserImp;
-    std::auto_ptr<parser::_Element> ptrParserEle;
+    parser::auto_ptr<parser::Parser> ptrParserImp;
+    parser::auto_ptr<parser::_Element> ptrParserEle;
     parser::_Factory parserFactory;
 
     bDirectExit = false;

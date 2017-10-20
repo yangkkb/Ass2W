@@ -7,7 +7,7 @@
 //Ansic C
 #include <string.h>
 
-#include "memory.h"
+#include "autoptr.h"
 //relative
 #include "Parser_Ass2.h"
 
@@ -45,7 +45,7 @@ namespace project {
             /*  ptrRetEle is a smart pointer , used to store _Element pointer
              *  when an exception is thrown , it will atomictally delete it
              */
-            std::auto_ptr<parser::_Element> ptrRetEle(new parser::_Element);
+            parser::auto_ptr<parser::_Element> ptrRetEle(new parser::_Element);
             /*  this stack is to storage operator if it is not empty when
              *  exit function . it will have an exception. if the right
              *  operator like ] will causes a pop action . and the pop
@@ -241,7 +241,6 @@ namespace project {
             }
             return ptrRetEle.release();
         }
-
     } //end of namespace Parser_Ass2
 }//end of namspace project
 
