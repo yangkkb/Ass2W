@@ -13,7 +13,7 @@
 #include "Parser.h"
 
 //================== some defines
-#define PDEBUG  true
+#define PDEBUG  false
 
 
 //================== Constant define
@@ -30,6 +30,47 @@ using namespace project;
 
 
 namespace project {
+
+    /*  this function check if the first command is s
+     *  args:
+     *      ptrEle: the pointer of parser element of command V
+     *  return:
+     *      bool: if true means format correct.
+     *  note:
+     *      if there is anythign wrong function return false. and print error
+     *          message on stderr
+     */
+    bool isCommands(parser::_Element* ptrEle) {
+        typedef parser::_Element::_ElementList::iterator EleIter;
+
+        parser::_Element* ptrEle_Current;
+        parser::_Element* ptrEle_Root;
+        EleIter _first, _end;
+
+        if (ptrEle == 0) {
+            std::cerr << "Error:" << "NULL pointer of element or point!" << std::endl;
+            return false;
+        }
+        ptrEle_Root = ptrEle_Current = ptrEle;
+        //check root type
+        if (ptrEle_Root->type != parser::_Element::type_node) {
+            //std::cerr << "Error:" << "Wrong parser element type!" << std::endl;
+            return false;
+        }
+        _first = ptrEle_Root->children.begin();
+        _end = ptrEle_Root->children.end();
+
+        // first must be label s
+        if (_first == _end) {
+            return false;
+        }
+        ptrEle_Current = *_first;
+        if ((ptrEle_Current->type != parser::_Element::type_label) ||
+                (ptrEle_Current->data_label != "s")) {
+            return false;
+        }
+        return true;
+    }
 
     /*  this function parsed command s from PtrEle
      *  args:
@@ -351,6 +392,7 @@ void Process(graph::_T_Graph<long, long>& Graph) {
     char* inputBufferS = new char[ReadBuffer_MaxLen];
     bool bInputRith;
     bool bDirectExit;
+    bool bhasVaildGraph;
     long v, s_start, s_end;
     //Parser
     std::auto_ptr<parser::Parser> ptrParserImp;
@@ -358,6 +400,7 @@ void Process(graph::_T_Graph<long, long>& Graph) {
     parser::_Factory parserFactory;
 
     bDirectExit = false;
+    bhasVaildGraph = false;
     //get Factory Instance
     try {
         parserFactory = parser::factory();
@@ -403,8 +446,27 @@ void Process(graph::_T_Graph<long, long>& Graph) {
                 bDirectExit = true;
                 break;
             }
-            if (convert2V(ptrParserEle.get(), &v) == false) {
-                continue;
+            if ((bhasVaildGraph == true) && (isCommands(ptrParserEle.get()))) { //if graph is vaild and s is command
+                // preform s
+                if (convert2s(ptrParserEle.get(), &s_start, &s_end) == false) {
+                    continue;
+                }
+                //start search
+                try {
+                    graph::searchPath(Graph, s_start, s_end, 0x7FFFFFFF);
+                    Graph[s_end].printPath(cout, '-');
+                    cout << endl;
+                } catch (graph::Exception & e) {
+                    cerr << "Error:";
+                    e.printMSG(cerr);
+                    cerr << endl;
+                    continue;
+                }
+                continue; // wait for V or s
+            } else {
+                if (convert2V(ptrParserEle.get(), &v) == false) {
+                    continue;
+                }
             }
 #if PDEBUG==true
             cout << "We got a V: " << v << endl;
@@ -416,6 +478,9 @@ void Process(graph::_T_Graph<long, long>& Graph) {
             Graph.Min_ID = 0;
             Graph.Max_ID = v - 1;
             bInputRith = true;
+            /*  A new vaild V command will make graph refresh
+             */
+            bhasVaildGraph = false;
         } //end loop for V
         if (bDirectExit == true) {
             break;
@@ -460,8 +525,10 @@ void Process(graph::_T_Graph<long, long>& Graph) {
             }
 #if PDEBUG==true
             cout << "We got a Graph: " << endl;
+            Graph.printGraph(cout);
 #endif
             bInputRith = true;
+            bhasVaildGraph = true;
         } //end loop for E
         if (bDirectExit == true) {
             break;
@@ -503,13 +570,18 @@ void Process(graph::_T_Graph<long, long>& Graph) {
             //start search
             try {
                 graph::searchPath(Graph, s_start, s_end, 0x7FFFFFFF);
+#if PDEBUG==true
+                cout << "We got a search result! " << endl;
+#endif
                 Graph[s_end].printPath(cout, '-');
                 cout << endl;
-            } catch (parser::Exception & e) {
+            } catch (graph::Exception & e) {
                 cerr << "Error:";
                 e.printMSG(cerr);
                 cerr << endl;
-                continue;
+                // if there is something wrong in search, then s should pass
+                // and watiing another V or S
+                //continue;
             }
             bInputRith = true;
         } //end loop for S

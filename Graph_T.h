@@ -76,15 +76,37 @@ namespace graph {
          */
         bool addEdge(Edge* edgeptr)
         throw () {
+            bool rSucess;
+            typename std::list<Edge*>::iterator _first, _end;
+
+            rSucess = false;
             if (edgeptr->point_begin == this) {
-                edges_begin.push_back(edgeptr);
-                return true;
+                // check if edge is already in
+                for (_first = edges_begin.begin(), _end = edges_begin.end();
+                        _first != _end; _first++) {
+                    if ((*_first) == edgeptr) {
+                        break;
+                    }
+                }
+                if (_first == _end) {
+                    edges_begin.push_back(edgeptr);
+                    rSucess = true;
+                }
             }
             if (edgeptr->point_end == this) {
-                edges_end.push_back(edgeptr);
-                return true;
+                // check if edge is already in
+                for (_first = edges_end.begin(), _end = edges_end.end();
+                        _first != _end; _first++) {
+                    if ((*_first) == edgeptr) {
+                        break;
+                    }
+                }
+                if (_first == _end) {
+                    edges_end.push_back(edgeptr);
+                    rSucess = true;
+                }
             }
-            return false;
+            return rSucess;
         }
 
         /*  search and Edge in list. Edge is (thisID,endID)
@@ -449,7 +471,10 @@ namespace graph {
             edges_list.push_back(newEdge);
             // check if begin id and end if whether exsit
             _ite_beginID = points_map.find(beginID);
-            _ite_endID = points_map.find(endID);
+            /*  can not do this if beginID=end ID then and not in map then
+             *  point will create tiwce
+             */
+            // _ite_endID = points_map.find(endID);
             if (_ite_beginID != points_map.end()) { //point class exist
                 tempPoint = _ite_beginID->second;
             } else { //point class not exist then creat it
@@ -462,6 +487,7 @@ namespace graph {
                 throw ID_Exception(beginID, "ID can not compatible with data in map");
             }
             // for end id
+            _ite_endID = points_map.find(endID);
             if (_ite_endID != points_map.end()) { //point class exist
                 tempPoint = _ite_endID->second;
             } else { //point class not exist then creat it
@@ -505,7 +531,7 @@ namespace graph {
             }
             // check if begin id and end if whether exsit
             _ite_beginID = points_map.find(beginID);
-            _ite_endID = points_map.find(endID);
+            //_ite_endID = points_map.find(endID);
             //begin ID
             if (_ite_beginID != points_map.end()) { //point class exist
                 ptr_beginPoint = _ite_beginID->second;
@@ -515,6 +541,7 @@ namespace graph {
                 points_map.insert(typename PointMap::value_type(beginID, ptr_beginPoint));
             }
             // for end id
+            _ite_endID = points_map.find(endID);
             if (_ite_endID != points_map.end()) { //point class exist
                 ptr_endPoint = _ite_endID->second;
             } else { //point class not exist then creat it
@@ -596,7 +623,7 @@ namespace graph {
             //return reference
             return tempPoint->value;
         }
-        
+
         /*  overload of operator []
          *  used to get a reference value of pID point
          *  args:
@@ -627,8 +654,6 @@ namespace graph {
             //return reference
             return *tempPoint;
         }
-
-
 
         /* print all Graph to outstream
          * args:

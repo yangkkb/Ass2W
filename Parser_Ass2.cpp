@@ -9,7 +9,7 @@
 //relative
 #include "Parser_Ass2.h"
 
-#define PDEBUG  true
+#define PDEBUG  false
 #if PDEBUG == true
 #include "iostream"
 #endif

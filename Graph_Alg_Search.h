@@ -120,6 +120,7 @@ namespace graph {
         _ite_start = graph.points_map.find(startID);
         _ite_end = graph.points_map.find(endID);
         _ite_map_end = graph.points_map.end();
+        
         if (_ite_start == _ite_map_end || _ite_end == _ite_map_end) {
             throw PathException(startID, endID, "Path Not exist, ID Not in map.");
         }
