@@ -188,8 +188,8 @@ namespace parser {
 
         /* a copy construction
          */
-        _Factory(parser::_Factory & fac) : ptrrefCount(0), ptrparserList(0),
-        ptrparserMap(0) {
+        _Factory(parser::_Factory & fac) : ptrrefCount(0), ptrparserMap(0),
+        ptrparserList(0) {
             clone(fac);
         }
 

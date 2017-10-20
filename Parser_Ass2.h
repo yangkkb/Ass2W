@@ -383,7 +383,7 @@ namespace project {
             static RetOperator getOperator(char* Str, int offset = 0) {
                 char cTemp;
                 char cTemp2;
-                char * singleOperator = "(){}[]~%#$\"?@.,";
+                const char * singleOperator = "(){}[]~%#$\"?@.,";
                 RetOperator RetOperator;
                 if (Str == 0) {
                     return RetOperator;
@@ -590,7 +590,7 @@ namespace project {
              */
             static bool isOperator(char* Str, int offset = 0) {
                 char cTemp;
-                char* Opertorchars = "(){}[]<>,.!+-=|#$%^&*'\"?:";
+                const char* Opertorchars = "(){}[]<>,.!+-=|#$%^&*'\"?:";
                 if (Str == 0) {
                     return false;
                 }
