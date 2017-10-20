@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "memory.h"
+
 //for C++ headfiles
 #include <iostream>
 //Graph

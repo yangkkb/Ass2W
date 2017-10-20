@@ -6,6 +6,8 @@
 
 //Ansic C
 #include <string.h>
+
+#include "memory.h"
 //relative
 #include "Parser_Ass2.h"
 
