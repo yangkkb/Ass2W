@@ -590,7 +590,7 @@ namespace project {
              */
             static bool isOperator(char* Str, int offset = 0) {
                 char cTemp;
-                const char* Opertorchars = "(){}[]<>,.!+-=|#$%^&*'\"?:";
+                const char* Opertorchars = "(){}[]<>,.!+-=|#$%^&*'\"?:/";
                 if (Str == 0) {
                     return false;
                 }
