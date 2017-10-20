@@ -58,17 +58,9 @@ namespace graph {
          * else
          *     return false
          */
-        bool addEdge(const Edge& edge)
+        bool addEdge(Edge& edge)
         throw () {
-            if (edge.point_begin == this) {
-                edges_begin.push_back(& edge);
-                return true;
-            }
-            if (edge.point_end == this) {
-                edges_end.push_back(& edge);
-                return true;
-            }
-            return false;
+            return addEdge(&edge);
         }
 
         /* same as Previous one
