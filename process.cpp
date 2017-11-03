@@ -361,37 +361,6 @@ namespace project {
 
 }// end namespace
 
-/*  this is test function should delete
- */
-
-#if PDEBUG == true
-
-void Process_Test() {
-    graph::_T_Graph<long, long> Graph;
-    long V;
-    try {
-        parser::_Factory factory = parser::factory();
-        parser::Parser* parser = factory.forInstance("Ass2");
-        parser::_Element* ele;
-        char* Str = "template<typename _Tp>\n class _Factory<Tp> \n parser::_Factory factory=parser::factory() SS!=";
-        char* Str2 = "E {<2 ,  6  >,<2,8> , <2,5 >,<6,5>,<  5,8>,<6,10>,<10,8>,}";
-        char* Str3 = "s 0 2  _";
-        ele = parser->parser(Str3);
-        convert2s(ele, &V, &V);
-        Graph.Min_ID = 0;
-        Graph.Max_ID = 15;
-        //convert2Graph(ele, Graph);
-        //graph::searchPath(Graph, 2, 10, 0x7FFFFFFF);
-        //Graph[10].printPath(cout, '-');
-    } catch (parser::Exception & e) {
-        e.printMSG(cerr);
-        cerr << endl;
-    } catch (graph::Exception & e) {
-        e.printMSG(cerr);
-        cerr << endl;
-    }
-}
-#endif
 
 void Process(graph::_T_Graph<long, long>& Graph) {
     //variables define
@@ -479,6 +448,7 @@ void Process(graph::_T_Graph<long, long>& Graph) {
 #if PDEBUG==true
             cout << "We got a V: " << v << endl;
 #endif
+            std::cout << inputBufferV << endl;
             if (v == 0) {
                 cerr << "Error:" << "V can not be 0" << endl;
                 continue;
@@ -520,6 +490,7 @@ void Process(graph::_T_Graph<long, long>& Graph) {
                 cerr << endl;
                 continue;
             }
+            std::cout<<inputBufferE<<endl;
             //Here convert ele 2 graph
             try {
                 if (convert2Graph(ptrParserEle.get(), Graph) == false) {
@@ -598,7 +569,7 @@ void Process(graph::_T_Graph<long, long>& Graph) {
         }
     }
 
-    delete inputBufferV;
-    delete inputBufferE;
-    delete inputBufferS;
+    delete[] inputBufferV;
+    delete[] inputBufferE;
+    delete[] inputBufferS;
 }

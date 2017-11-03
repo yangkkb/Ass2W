@@ -11,15 +11,11 @@
 //#include "Parser.h"
 
 //================== Constant define
-namespace project {
-    const int ReadBuffer_MaxLen = 0xFFFF; //64KB for read buffer
-}
 
 //namespace decleartion
 using std::cin;
 using std::cout;
 using std::endl;
-using namespace project;
 
 //================== Example demos
 void examples(graph::_T_Graph<long, long> & Graph);
